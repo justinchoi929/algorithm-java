@@ -32,59 +32,64 @@ class No164 {
      * 3664. 两个字母卡片游戏
      */
     public int score(String[] cards, char x) {
-        int[] cnt1 = new int[10]; // 题目保证只有前 10 个小写字母
-        int[] cnt2 = new int[10];
-        for (String s : cards) {
-            // 统计形如 x? 的每个 ? 的出现次数
-            char c0 = s.charAt(0);
-            char c1 = s.charAt(1);
-            if (c0 == x) {
-                cnt1[c1 - 'a']++;
+        int[] cnt1 = new int[10]; // 存储 x* 型数据
+        int[] cnt2 = new int[10]; // 存储 *x 型数据
+        for (String card : cards) {
+            char a = card.charAt(0);
+            char b = card.charAt(1);
+            if (a == x) {
+                cnt1[b - 'a']++;
             }
-            // 统计形如 ?x 的每个 ? 的出现次数
-            if (c1 == x) {
-                cnt2[c0 - 'a']++;
+            if (b == x) {
+                cnt2[a - 'a']++;
             }
         }
-
         int[] res1 = getSumAndMax(cnt1, x);
         int[] res2 = getSumAndMax(cnt2, x);
         int sum1 = res1[0], max1 = res1[1];
         int sum2 = res2[0], max2 = res2[1];
 
-        int cntXX = cnt1[x - 'a'];
+        int xx = cnt1[x - 'a']; // cnt1[x - 'a'] 和 cnt2[x - 'a'] 结果是一样的
         int ans = 0;
-        // 枚举分配 k 个 xx 给第一组，其余的 xx 给第二组
-        for (int k = 0; k <= cntXX; k++) {
-            int score1 = calcScore(sum1, max1, k);
-            int score2 = calcScore(sum2, max2, cntXX - k);
+
+        for (int k = 0; k <= xx; k++) {
+            int score1 = getScore(sum1, max1, k);
+            int score2 = getScore(sum2, max2, xx - k);
             ans = Math.max(ans, score1 + score2);
         }
         return ans;
+
     }
 
-    // 计算除了 x 以外的出现次数之和 sum，出现次数最大值 mx
-    private int[] getSumAndMax(int[] cnt, char x) {
-        int sum = 0, mx = 0;
-        for (int i = 0; i < cnt.length; i++) {
-            if (i != x - 'a') {
-                sum += cnt[i];
-                mx = Math.max(mx, cnt[i]);
+    private int[] getSumAndMax(int[] arr, char x) {
+        int sum = 0, max = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (i != x - 'a') { // xx 的情况单独讨论
+                sum += arr[i];
+                max = Math.max(max, arr[i]);
             }
+
         }
-        return new int[]{sum, mx};
+        return new int[]{sum, max};
     }
 
-    // 计算这一组在得到 k 个 xx 后的得分
-    private int calcScore(int sum, int mx, int k) {
+    private int getScore(int sum, int max, int k) {
         sum += k;
-        mx = Math.max(mx, k);
-        return Math.min(sum / 2, sum - mx);
+        max = Math.max(max, k);
+        // return Math.min(sum/2, sum-max);
+        // 如果 max 比其余元素个数 sum−max 还多，那么操作次数为其余元素个数 sum−max。否则操作次数为 sum / 2
+        if (max > (sum - max)) {
+            return sum - max;
+        } else {
+            return sum / 2;
+        }
     }
 
     /**
      * 3665. 统计镜子反射路径数目
      */
+
+    // 递归写法
     private static final int MOD = 1_000_000_007;
 
     public int uniquePaths(int[][] grid) {
@@ -118,6 +123,28 @@ class No164 {
             res = dfs(i, j - 1, 0, memo, grid); // 反射到上边
         }
         return memo[i][j][k] = res; // 记忆化
+    }
+
+    // 递推写法
+    private static final int mod = (int) (1e9 + 7);
+
+    public int uniquePaths(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][][] dp = new int[m + 1][n + 1][2];
+        dp[0][1][0] = dp[0][1][1] = 1;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 0) {
+                    dp[i + 1][j + 1][0] = (dp[i][j + 1][1] + dp[i + 1][j][0]) % mod;
+                    dp[i + 1][j + 1][1] = (dp[i][j + 1][1] + dp[i + 1][j][0]) % mod;
+                } else {
+                    dp[i + 1][j + 1][0] = dp[i][j + 1][1];
+                    dp[i + 1][j + 1][1] = dp[i + 1][j][0];
+                }
+            }
+        }
+        return dp[m][n][0];
     }
 
     /**
