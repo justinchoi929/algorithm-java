@@ -1,4 +1,4 @@
-class IOTemplate{
+class IOTemplate {
     public static void main(String[] args) {
         /**
          * 包含规模：
@@ -13,15 +13,15 @@ class IOTemplate{
 
         // 读取n和m
         in.nextToken();
-        int n = (int)in.nval;
+        int n = (int) in.nval;
         in.nextToken();
-        int m = (int)in.nval;
+        int m = (int) in.nval;
 
         int[][] nums = new int[m][n];
-        for(int i = 0; i < m; i++){
-            for(int j = 0; j < n; j++){
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 in.nextToken();
-                nums[i][j] = (int)in.nval;
+                nums[i][j] = (int) in.nval;
             }
         }
         out.println(Arrays.deepToString(nums));
