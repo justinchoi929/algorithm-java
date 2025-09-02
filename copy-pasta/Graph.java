@@ -167,5 +167,50 @@ class Graph {
 
     /**
      * 网格图 0-1 BFS
+     * 0-1 BFS 本质是对 Dijkstra 算法的优化。
+     * 因为边权只有 0 和 1，我们可以把最小堆换成双端队列.
+     * 遇到 0 边权就加入队首，遇到 1 边权就加入队尾，这样可以保证队首总是最小的，就不需要最小堆了
      */
+    private static final int[][] dirs = { { 0, -1 }, { 0, 1 }, { -1, 0 }, { 1, 0 } };
+    private static final int inf = 0x3f3f3f3f;
+
+    public boolean findSafeWalk(List<List<Integer>> grid, int health) {
+        int m = grid.size();
+        int n = grid.get(0).size();
+        int[][] dis = new int[m][n];
+        for (int[] row : dis) {
+            Arrays.fill(row, inf);
+        }
+        Deque<int[]> q = new ArrayDeque<>();
+        q.addFirst(new int[] { 0, 0 });
+
+        dis[0][0] = grid.get(0).get(0);
+        while (!q.isEmpty()) {
+            int[] cur = q.pollFirst();
+            int i = cur[0], j = cur[1];
+            int d = dis[i][j];
+            if (i == m - 1 && j == n - 1) {
+                return true;
+            }
+            for (int[] dir : dirs) {
+                int x = i + dir[0];
+                int y = j + dir[1];
+
+                if (x >= 0 && x < m && y >= 0 && y < n) {
+                    int cost = grid.get(x).get(y);
+                    int newDis = d + cost;
+                    if (newDis < health && newDis < dis[x][y]) {
+                        dis[x][y] = newDis;
+                        if (cost == 0) {
+                            q.addFirst(new int[] { x, y });
+                        } else {
+                            q.addLast(new int[] { x, y });
+                        }
+
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
