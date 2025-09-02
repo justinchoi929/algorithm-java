@@ -1,6 +1,8 @@
 class Graph {
     /**
      * 网格图 DFS
+     *
+     * 时间复杂度 O(mn)
      */
     private void dfs(char[][] grid, int i, int j) {
         if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] != '1') {
@@ -50,6 +52,8 @@ class Graph {
     /**
      * 网格图 BFS
      * 适用于需要计算最短距离（最短路）的题目
+     *
+     * 时间复杂度 O(mn)
      */
     private static final int[][] dirs = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}}; // 左右上下
 
@@ -87,6 +91,8 @@ class Graph {
      * 1. 选距离源点最近且未访问的点
      * 2. 标记该点访问过
      * 3. 更新所有未访问节点到源点的距离
+     *
+     * 时间复杂度 O(n^2)
      */
     public int networkDelayTime(int[][] times, int n, int k) {
         final int inf = Integer.MAX_VALUE / 2;
@@ -132,6 +138,8 @@ class Graph {
      * 1. 选距离源点最近且未访问的点
      * 2. 标记该点访问过
      * 3. 更新所有未访问节点到源点的距离
+     *
+     * 时间复杂度 O(mlogm)
      */
     public int networkDelayTime(int[][] times, int n, int k) {
         List<int[]>[] g = new ArrayList[n]; // 邻接表存储图

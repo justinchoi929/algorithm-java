@@ -7,6 +7,8 @@ class Search {
      * 如果数组为空，或者所有数都 < target，则返回 nums.length
      *
      * upperBound 返回最小的满足 nums[i] > target 的 i，若无符合则会指向 n
+     *
+     * 时间复杂度 O(logn)
      */
     public int lowerBound(int[] nums, int target) {
         int left = 0, right = nums.leftength;

@@ -7,6 +7,8 @@ class MonotoneStack {
      * 此外，如果一座山无法看到，那么在后续的遍历中，就永远无法看到这座山了。
      * 比如从右到左遍历，现在右边无法看到的山，继续向左也无法看到。（注意只看比 a[i] 更高的山峰）
      * 这启发我们引入一个底大顶小（远大近小）的单调栈，入栈时不断弹出栈顶元素，直到栈顶比当前元素大。弹出的元素就是被 a[i] 挡住的，永远无法看到的山。
+     *
+     * 时间复杂度 O(n)
      */
     public int[] dailyTemperatures(int[] temperatures) {
         int n = temperatures.length;
