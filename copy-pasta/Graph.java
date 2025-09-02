@@ -28,8 +28,10 @@ class Graph {
         size += dfs(grid, i + 1, j);
         return size;
     }
+
     // 也可写成如下形式
     private static final int[][] dirs = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}}; // 左右上下
+
     private int dfs(int[][] grid, int i, int j) {
         if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] != 1) {
             return 0; // 越界返回 0 而不是 size
@@ -50,12 +52,13 @@ class Graph {
      * 适用于需要计算最短距离（最短路）的题目
      */
     private static final int[][] dirs = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}}; // 左右上下
+
     public int bfs(char[][] maze, int[] entrance) {
         int m = maze.length;
         int n = maze[0].length;
         boolean[][] visited = new boolean[m][n];
         Deque<int[]> q = new ArrayDeque<>();
-        q.offer(new int[] { entrance[0], entrance[1] });
+        q.offer(new int[]{entrance[0], entrance[1]});
         visited[entrance[0]][entrance[1]] = true;
         int ans = 0;
         while (!q.isEmpty()) {
@@ -71,7 +74,7 @@ class Graph {
                             return ans;
                         }
                         visited[x][y] = true;
-                        q.offer(new int[] { x, y });
+                        q.offer(new int[]{x, y});
                     }
                 }
             }
@@ -136,13 +139,13 @@ class Graph {
         int[] dis = new int[n];
         Arrays.fill(dis, Integer.MAX_VALUE);
         for (int[] t : times) {
-            g[t[0] - 1].add(new int[] { t[1] - 1, t[2] });
+            g[t[0] - 1].add(new int[]{t[1] - 1, t[2]});
         }
 
         dis[k - 1] = 0;
         PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> (a[1] - b[1]));
         int left = n;
-        q.offer(new int[] { k - 1, 0 });
+        q.offer(new int[]{k - 1, 0});
         int minDis = 0;
 
         while (!q.isEmpty()) {
@@ -158,7 +161,7 @@ class Graph {
                 int y = e[0];
                 if (minDis + e[1] < dis[y]) {
                     dis[y] = minDis + e[1];
-                    q.offer(new int[] { y, dis[y] });
+                    q.offer(new int[]{y, dis[y]});
                 }
             }
         }
@@ -171,46 +174,41 @@ class Graph {
      * 因为边权只有 0 和 1，我们可以把最小堆换成双端队列.
      * 遇到 0 边权就加入队首，遇到 1 边权就加入队尾，这样可以保证队首总是最小的，就不需要最小堆了
      */
-    private static final int[][] dirs = { { 0, -1 }, { 0, 1 }, { -1, 0 }, { 1, 0 } };
+    private static final int[][] dirs = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
     private static final int inf = 0x3f3f3f3f;
 
-    public boolean findSafeWalk(List<List<Integer>> grid, int health) {
-        int m = grid.size();
-        int n = grid.get(0).size();
+    public int minimumObstacles(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
         int[][] dis = new int[m][n];
         for (int[] row : dis) {
             Arrays.fill(row, inf);
         }
         Deque<int[]> q = new ArrayDeque<>();
-        q.addFirst(new int[] { 0, 0 });
-
-        dis[0][0] = grid.get(0).get(0);
+        dis[0][0] = 0;
+        q.addFirst(new int[]{0, 0});
         while (!q.isEmpty()) {
             int[] cur = q.pollFirst();
             int i = cur[0], j = cur[1];
             int d = dis[i][j];
-            if (i == m - 1 && j == n - 1) {
-                return true;
-            }
+
             for (int[] dir : dirs) {
                 int x = i + dir[0];
                 int y = j + dir[1];
-
                 if (x >= 0 && x < m && y >= 0 && y < n) {
-                    int cost = grid.get(x).get(y);
+                    int cost = grid[x][y];
                     int newDis = d + cost;
-                    if (newDis < health && newDis < dis[x][y]) {
+                    if (newDis < dis[x][y]) {
                         dis[x][y] = newDis;
                         if (cost == 0) {
-                            q.addFirst(new int[] { x, y });
+                            q.addFirst(new int[]{x, y});
                         } else {
-                            q.addLast(new int[] { x, y });
+                            q.addLast(new int[]{x, y});
                         }
-
                     }
                 }
             }
         }
-        return false;
+        return dis[m - 1][n - 1];
     }
 }
