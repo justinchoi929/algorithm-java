@@ -27,7 +27,7 @@ class IOTemplate {
         out.println(Arrays.deepToString(nums));
 
         out.flush();
-        in.close();
+        br.close();
         out.close();
 
         /**
