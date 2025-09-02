@@ -141,18 +141,19 @@ class Graph {
 
         dis[k - 1] = 0;
         PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> (a[1] - b[1]));
-        boolean[] visited = new boolean[n];
+        int left = n;
         q.offer(new int[] { k - 1, 0 });
         int minDis = 0;
 
         while (!q.isEmpty()) {
             int[] cur = q.poll();
             int x = cur[0];
-            minDis = cur[1];
-            if (visited[x] == true) {
+            int d = cur[1];
+            if (d > dis[x]) {
                 continue;
             }
-            visited[x] = true;
+            minDis = d;
+            left--;
             for (int[] e : g[x]) {
                 int y = e[0];
                 if (minDis + e[1] < dis[y]) {
@@ -161,8 +162,7 @@ class Graph {
                 }
             }
         }
-        int ans = Arrays.stream(dis).max().getAsInt();
-        return ans == Integer.MAX_VALUE ? -1 : ans;
+        return left == 0 ? minDis : -1;
     }
 
     /**
