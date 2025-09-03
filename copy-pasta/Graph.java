@@ -219,4 +219,46 @@ class Graph {
         }
         return dis[m - 1][n - 1];
     }
+
+    /**
+     * 图 DFS
+     *
+     * 时间复杂度 O(mn)
+     */
+    class Solution {
+        public List<Integer> solve(int n, int[][] edges) {
+            // 节点编号从 0 到 n-1
+            List<Integer>[] g = new ArrayList[n];
+            Arrays.setAll(g, i -> new ArrayList<>());
+            for (int[] e : edges) {
+                int x = e[0];
+                int y = e[1];
+                g[x].add(y);
+                g[y].add(x); // 无向图
+            }
+
+            // 计算每个连通块的大小
+            List<Integer> ans = new ArrayList<>();
+            boolean[] vis = new boolean[n];
+            for (int i = 0; i < n; i++) {
+                if (!vis[i]) { // i 没有访问过
+                    int size = dfs(i, vis, g);
+                    ans.add(size);
+                }
+            }
+            return ans;
+        }
+
+        private int dfs(int x, boolean[] vis, List<Integer>[] g) {
+            vis[x] = true; // 避免重复访问节点
+            int size = 1;
+            for (int y : g[x]) {
+                if (!vis[y]) {
+                    size += dfs(y, vis, g);
+                }
+            }
+            return size;
+        }
+    }
+
 }
