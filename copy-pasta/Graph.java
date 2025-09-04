@@ -224,6 +224,7 @@ class Graph {
      * 图 DFS
      *
      * 时间复杂度 O(mn)
+     * 题目不同会有变化
      */
     class Solution {
         public List<Integer> solve(int n, int[][] edges) {
