@@ -1,7 +1,7 @@
 class Graph {
     /**
      * 网格图 DFS
-     *
+     * <p>
      * 时间复杂度 O(mn)
      */
     private void dfs(char[][] grid, int i, int j) {
@@ -52,7 +52,7 @@ class Graph {
     /**
      * 网格图 BFS
      * 适用于需要计算最短距离（最短路）的题目
-     *
+     * <p>
      * 时间复杂度 O(mn)
      */
     private static final int[][] dirs = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}}; // 左右上下
@@ -91,7 +91,7 @@ class Graph {
      * 1. 选距离源点最近且未访问的点
      * 2. 标记该点访问过
      * 3. 更新所有未访问节点到源点的距离
-     *
+     * <p>
      * 时间复杂度 O(n^2)
      */
     public int networkDelayTime(int[][] times, int n, int k) {
@@ -138,7 +138,7 @@ class Graph {
      * 1. 选距离源点最近且未访问的点
      * 2. 标记该点访问过
      * 3. 更新所有未访问节点到源点的距离
-     *
+     * <p>
      * 时间复杂度 O(mlogm)
      */
     public int networkDelayTime(int[][] times, int n, int k) {
@@ -222,7 +222,7 @@ class Graph {
 
     /**
      * 图 DFS
-     *
+     * <p>
      * 时间复杂度 O(mn)
      * 题目不同会有变化
      */
@@ -264,41 +264,39 @@ class Graph {
 
     /**
      * 图 BFS
-     *
+     * <p>
      * 时间复杂度 O(mn)
      * 题目不同会有变化
      * 求最短路等。要求边权都是 1（或者说都是同一个正数）。
      * 模板（单源最短路）：
      */
-    class Solution {
-        // 计算从 start 到各个节点的最短路长度
-        // 如果节点不可达，则最短路长度为 -1
-        // 节点编号从 0 到 n-1，边权均为 1
-        public int[] bfs(int n, int[][] edges, int start) {
-            List<Integer>[] g = new ArrayList[n];
-            Arrays.setAll(g, _ -> new ArrayList<>());
-            for (int[] e : edges) {
-                int x = e[0], y = e[1];
-                g[x].add(y);
-                g[y].add(x); // 无向图
-            }
+    // 计算从 start 到各个节点的最短路长度
+    // 如果节点不可达，则最短路长度为 -1
+    // 节点编号从 0 到 n-1，边权均为 1
+    public int[] bfs(int n, int[][] edges, int start) {
+        List<Integer>[] g = new ArrayList[n];
+        Arrays.setAll(g, _ -> new ArrayList<>());
+        for (int[] e : edges) {
+            int x = e[0], y = e[1];
+            g[x].add(y);
+            g[y].add(x); // 无向图
+        }
 
-            int[] dis = new int[n];
-            Arrays.fill(dis, -1); // -1 表示尚未访问到
-            Queue<Integer> q = new ArrayDeque<>();
-            dis[start] = 0;
-            q.offer(start);
-            while (!q.isEmpty()) {
-                int x = q.poll();
-                for (int y : g[x]) {
-                    if (dis[y] < 0) {
-                        dis[y] = dis[x] + 1;
-                        q.offer(y);
-                    }
+        int[] dis = new int[n];
+        Arrays.fill(dis, -1); // -1 表示尚未访问到
+        Queue<Integer> q = new ArrayDeque<>();
+        dis[start] = 0;
+        q.offer(start);
+        while (!q.isEmpty()) {
+            int x = q.poll();
+            for (int y : g[x]) {
+                if (dis[y] < 0) {
+                    dis[y] = dis[x] + 1;
+                    q.offer(y);
                 }
             }
-            return dis;
         }
+        return dis;
     }
 
 }
