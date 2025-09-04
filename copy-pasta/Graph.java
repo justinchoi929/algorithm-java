@@ -262,4 +262,43 @@ class Graph {
         }
     }
 
+    /**
+     * 图 BFS
+     *
+     * 时间复杂度 O(mn)
+     * 题目不同会有变化
+     * 求最短路等。要求边权都是 1（或者说都是同一个正数）。
+     * 模板（单源最短路）：
+     */
+    class Solution {
+        // 计算从 start 到各个节点的最短路长度
+        // 如果节点不可达，则最短路长度为 -1
+        // 节点编号从 0 到 n-1，边权均为 1
+        public int[] bfs(int n, int[][] edges, int start) {
+            List<Integer>[] g = new ArrayList[n];
+            Arrays.setAll(g, _ -> new ArrayList<>());
+            for (int[] e : edges) {
+                int x = e[0], y = e[1];
+                g[x].add(y);
+                g[y].add(x); // 无向图
+            }
+
+            int[] dis = new int[n];
+            Arrays.fill(dis, -1); // -1 表示尚未访问到
+            Queue<Integer> q = new ArrayDeque<>();
+            dis[start] = 0;
+            q.offer(start);
+            while (!q.isEmpty()) {
+                int x = q.poll();
+                for (int y : g[x]) {
+                    if (dis[y] < 0) {
+                        dis[y] = dis[x] + 1;
+                        q.offer(y);
+                    }
+                }
+            }
+            return dis;
+        }
+    }
+
 }
