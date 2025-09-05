@@ -306,7 +306,7 @@ class Graph {
      */
     // 返回有向无环图（DAG）的其中一个拓扑序
     // 如果图中有环，返回空列表
-    // 节点编号从 0 到 n-1
+    // 节点编号从 0 到 n - 1
     public List<Integer> topologicalSort(int n, int[][] edges) {
         List<Integer>[] g = new ArrayList[n];
         Arrays.setAll(g, _ -> new ArrayList<>());
